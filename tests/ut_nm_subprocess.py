@@ -3,9 +3,6 @@ import sys
 import harshexit
 import os
 
-initproc = subprocess.Popen([sys.executable, "nminit.py"])
-initproc.wait()
-
 nmproc = subprocess.Popen([sys.executable, "nmmain.py", "--test-mode"], stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
 
 # without closing stdin, stdout, stderr, nmmain.py won't execute on XP
