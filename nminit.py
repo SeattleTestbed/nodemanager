@@ -281,6 +281,7 @@ def initialize_state():
       shutil.rmtree(vesseldirectoryname)
 
   # initialize my configuration file.   This involves a few variables:
+  #    seattle_installed -- signal that the installation succeeded
   #    pollfrequency --  the amount of time to sleep after a check when "busy
   #                      waiting".   This trades CPU load for responsiveness.
   #    ports         --  the ports the node manager could listen on.
@@ -292,10 +293,11 @@ def initialize_state():
 
   # NOTE: I chose these randomly (they will be uniform across all NMs)...   
   # Was this wise?
-  configuration['ports'] = [<nodemanager_port>, 2888, 9625, 10348, 39303, 48126, 52862, 57344, 64310]
+  configuration['ports'] = [1224, 2888, 9625, 10348, 39303, 48126, 52862, 57344, 64310]
 
   print "Generating key..."
   keys = rsa_gen_pubpriv_keys(100)
+  configuration['seattle_installed'] = True
   configuration['publickey'] = keys[0]
   configuration['privatekey'] = keys[1]
   configuration['service_vessel'] = 'v2'
@@ -328,7 +330,7 @@ def initialize_state():
   # write out the vessel dictionary...
   persist.commit_object(vesseldict,"vesseldict")
 
-
+  print "Done initializing state."
 
 
 
