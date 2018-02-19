@@ -533,6 +533,17 @@ def main():
   servicelogger.log("[INFO]:Loading config")
   # BUG: Do this better?   Is this the right way to engineer this?
   configuration = persist.restore_object("nodeman.cfg")
+
+  # If Seattle is not installed, the nodemanager will have no vesseldict
+  # and an incomplete config. Log this problem and exit.
+  try:
+    if configuration["seattle_installed"] is not True:
+      servicelogger.log("[ERROR]:Seattle is not installed. Run the Seattle installer to create the required configuration files before starting the nodemanager. Exiting.")
+      harshexit.harshexit(10)
+  except KeyError:
+    # There isn't even a "seattle_installed" entry in this dict!?
+    servicelogger.log("[ERROR]:The nodemanager configuration, nodeman.cfg, is corrupt. Exiting.")
+    harshexit.harshexit(11)
   
   
   # Armon: initialize the network restrictions
